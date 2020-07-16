@@ -18,9 +18,9 @@ POST {{BASE_URL}}/task/addNewTask
 Content-Type: application/json
 
 {
-    "name" : "MongoDb öğren",
-    "description" : "Udemy kurslarını takip et, düzenli bir şekilde çalış",
-    "categoryId" : "5f105dd854c7a92db8613ea2"
+    "name" : "Macbook araştır",
+    "description" : "sahibinden.com üzerindeki yeni ilanları araştır",
+    "categoryId" : "5f105de554c7a92db8613ea4"
 }
 
 ###

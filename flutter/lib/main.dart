@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
+import 'core/viewmodels/category_view_model.dart';
 import 'ui/sceens/home_page.dart';
 
 void main() {
   runApp(MyApp());
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarBrightness: Brightness.light,
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -11,9 +19,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<CategoryListViewModel>(create: (context) => CategoryListViewModel()),
+      ],
+          child: MaterialApp(
+        theme: ThemeData(
+          fontFamily: 'Montserrat'
+        ),
+        debugShowCheckedModeBanner: false,
+        home: HomePage(),
+      ),
     );
   }
 }
