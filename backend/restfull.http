@@ -1,0 +1,52 @@
+@BASE_URL = http://localhost:3000/api
+
+POST {{BASE_URL}}/category/addNewCategory
+Content-Type: application/json
+
+{
+    "name" : "Aylık"
+}
+
+###
+
+
+GET {{BASE_URL}}/category/listAllCategories
+Content-Type: application/json
+
+###
+POST {{BASE_URL}}/task/addNewTask
+Content-Type: application/json
+
+{
+    "name" : "MongoDb öğren",
+    "description" : "Udemy kurslarını takip et, düzenli bir şekilde çalış",
+    "categoryId" : "5f105dd854c7a92db8613ea2"
+}
+
+###
+
+POST {{BASE_URL}}/task/updateTask
+Content-Type: application/json
+
+ {
+     "id" : "5f105e0254c7a92db8613ea5",
+     "name" : "Flutterda TDD yaklaşımına bak",
+     "description" : "Unit test konusunu detaylica araştır",
+     "categoryId" : "5f105dd854c7a92db8613ea2"
+ }
+
+
+###
+
+POST {{BASE_URL}}/task/deleteTask
+Content-Type: application/json
+
+{
+    "id" : "5f105e0254c7a92db8613ea5"
+}
+
+###
+
+GET {{BASE_URL}}/task/listAllTasks
+Content-Type: application/json
+
