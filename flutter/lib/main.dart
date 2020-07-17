@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'core/viewmodels/category_view_model.dart';
-import 'ui/sceens/home_page.dart';
+import 'core/viewmodels/task_view_model.dart';
+import 'ui/screens/home_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<CategoryListViewModel>(create: (context) => CategoryListViewModel()),
+        ChangeNotifierProvider<TaskViewModel>(create: (context) => TaskViewModel()),
       ],
           child: MaterialApp(
         theme: ThemeData(

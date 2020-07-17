@@ -50,3 +50,12 @@ Content-Type: application/json
 GET {{BASE_URL}}/task/listAllTasks
 Content-Type: application/json
 
+###
+
+POST {{BASE_URL}}/task/listTasksById
+Content-Type: application/json
+
+{
+    "categoryId" : "5f105de554c7a92db8613ea4"
+}
+

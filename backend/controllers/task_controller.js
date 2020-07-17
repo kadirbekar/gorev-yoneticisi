@@ -34,7 +34,11 @@ const addNewTask = async (req, res, next) => {
 //var olan görevi güncellerken kullanılır
 const updateTask = async (req, res, next) => {
   try {
-    const willBeUpdated = await Task.findOneAndUpdate({ _id: req.body.id },req.body,{ lean: true,new :true });
+    const willBeUpdated = await Task.findOneAndUpdate(
+      { _id: req.body.id },
+      req.body,
+      { lean: true, new: true }
+    );
     if (willBeUpdated) {
       return res.status(201).json({
         result: true,
@@ -49,15 +53,15 @@ const updateTask = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(createError(500,error));
+    next(createError(500, error));
   }
 };
 
 //var olan görevi silerken kullanılır
 const deleteTask = async (req, res, next) => {
   try {
-    const willBeDeleted = await Task.findByIdAndDelete({_id: req.body.id});
-    if(willBeDeleted) {
+    const willBeDeleted = await Task.findByIdAndDelete({ _id: req.body.id });
+    if (willBeDeleted) {
       return res.status(201).json({
         result: true,
         message: "Başarılı bir şekilde silindi",
@@ -71,23 +75,34 @@ const deleteTask = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(createError(500,error));
+    next(createError(500, error));
   }
 };
 
 //bütün kayıtları listeler
-const listAllTasks  = async (req,res,next) => {
+const listAllTasks = async (req, res, next) => {
   try {
     const data = await Task.find({});
     return res.status(200).json(data);
   } catch (error) {
+    next(createError(500, error));
+  }
+};
+
+//get tasks by categoryId
+const listTasksById = async (req, res, next) => {
+  try {
+    const data = await Task.find().where("categoryId").equals(req.body.categoryId);
+    return res.status(200).json(data);
+  } catch (error) {
     next(createError(500,error));
   }
-}
+};
 
 module.exports = {
   addNewTask,
   updateTask,
   deleteTask,
-  listAllTasks
+  listAllTasks,
+  listTasksById
 };

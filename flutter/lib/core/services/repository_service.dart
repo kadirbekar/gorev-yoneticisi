@@ -1,6 +1,6 @@
 import '../models/category_list.dart';
+import '../models/task.dart';
 import 'mongodb_service.dart';
-
 
 //this class gets and returns data between mongo service and view model classes
 class RepositoryService {
@@ -14,7 +14,11 @@ class RepositoryService {
 
   RepositoryService._init();
 
-  Future<List<CategoriList>> getAllCategories() async {
+  Future<List<CategoryList>> getAllCategories() async {
     return await _mongoDbService.getAllCategories();
+  }
+
+  Future<List<Task>> listTasksById(String categoryId) async {
+    return await _mongoDbService.listTasksById(categoryId);
   }
 }

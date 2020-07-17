@@ -2,14 +2,14 @@
 
 import 'dart:convert';
 
-List<CategoriList> categoriListFromJson(String str) => List<CategoriList>.from(
-    json.decode(str).map((x) => CategoriList.fromJson(x)));
+List<CategoryList> categoriListFromJson(String str) => List<CategoryList>.from(
+    json.decode(str).map((x) => CategoryList.fromJson(x)));
 
-String categoriListToJson(List<CategoriList> data) =>
+String categoriListToJson(List<CategoryList> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class CategoriList {
-  CategoriList({
+class CategoryList {
+  CategoryList({
     this.id,
     this.name,
     this.createdDate,
@@ -19,7 +19,7 @@ class CategoriList {
   String name;
   DateTime createdDate;
 
-  factory CategoriList.fromJson(Map<String, dynamic> json) => CategoriList(
+  factory CategoryList.fromJson(Map<String, dynamic> json) => CategoryList(
         id: json["_id"],
         name: json["name"],
         createdDate: DateTime.parse(json["createdDate"]),

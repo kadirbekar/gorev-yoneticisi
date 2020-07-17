@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
-import 'package:gorev_yoneticisi/core/models/category_list.dart';
-import 'package:gorev_yoneticisi/core/services/repository_service.dart';
+
+import '../models/category_list.dart';
+import '../services/repository_service.dart';
 
 enum DataState { InitialState, LoadingState, LoadedState, ErrorState }
 
 class CategoryListViewModel with ChangeNotifier {
-  List<CategoriList> _categoryList;
+  List<CategoryList> categoryList;
   RepositoryService _repositoryService = RepositoryService.instance;
   DataState _state;
 
   CategoryListViewModel() {
-    _categoryList = [];
+    categoryList = [];
     _state = DataState.InitialState;
   }
 
@@ -22,12 +23,12 @@ class CategoryListViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<CategoriList>> getAllCategories() async{
+  Future<List<CategoryList>> getAllCategories() async{
     try {
-      _categoryList = await _repositoryService.getAllCategories();
+      categoryList = await _repositoryService.getAllCategories();
     } catch (e) {
       state = DataState.ErrorState;
     }
-    return _categoryList;
+    return categoryList;
   }
 }

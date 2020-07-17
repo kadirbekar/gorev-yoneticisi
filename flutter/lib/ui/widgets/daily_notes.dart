@@ -1,49 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:gorev_yoneticisi/core/models/category_list.dart';
-import 'package:gorev_yoneticisi/core/viewmodels/category_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/models/task.dart';
+import '../../core/viewmodels/task_view_model.dart';
+import '../common_widgets/no_saved_data.dart';
+import '../common_widgets/none_state.dart';
+import '../common_widgets/progress_indicator.dart';
+
 class DailyNotes extends StatefulWidget {
-  DailyNotes({Key key}) : super(key: key);
+  final String categoryId;
+  DailyNotes({Key key, @required this.categoryId}) : super(key: key);
 
   @override
   _DailyNotesState createState() => _DailyNotesState();
 }
 
 class _DailyNotesState extends State<DailyNotes> {
-  List<CategoriList> _categoryList;
+  TaskViewModel _taskViewModel;
+  List<Task> _taskList;
 
   @override
   void initState() {
     super.initState();
-    _categoryList = [];
+    _taskList = [];
   }
 
   @override
   Widget build(BuildContext context) {
-    var _categoryListViewModel = Provider.of<CategoryListViewModel>(context);
+    _taskViewModel = Provider.of<TaskViewModel>(context, listen: false);
     return Scaffold(
       body: FutureBuilder(
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              return Text("none");
-              break;
-            case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator(),);
-              break;
-            case ConnectionState.active:
-            case ConnectionState.done:
-              _categoryList = snapshot.data;
-              return ListView.builder(itemBuilder: (context,index){
-                return Text(_categoryList[index].name);
-              },itemCount: _categoryList.length,);
-            default:
-              return null;
-          }
-        },
-        future: _categoryListViewModel.getAllCategories(),
-      ),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return NoneState();
+                break;
+              case ConnectionState.waiting:
+                return MyProgressIndicator();
+                break;
+              case ConnectionState.active:
+              case ConnectionState.done:
+                _taskList = snapshot.data;
+                return showResult;
+              default:
+                return null;
+            }
+          },
+          future: _taskViewModel.listTasksById(widget.categoryId)),
     );
   }
+
+  Widget get showResult => ListView.builder(
+        itemBuilder: (context, index) {
+          if (_taskList.length > 0) {
+            return Card(
+              child: ListTile(
+                leading: CircleAvatar(
+                  child: Text((index + 1).toString()),
+                ),
+                title: Text(_taskList[index].name),
+                subtitle: Text(_taskList[index].description),
+              ),
+            );
+          } else {
+            return NoSavedData();
+          }
+        },
+        itemCount: _taskList.length,
+      );
 }
