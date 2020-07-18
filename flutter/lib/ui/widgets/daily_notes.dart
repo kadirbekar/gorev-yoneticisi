@@ -3,13 +3,17 @@ import 'package:provider/provider.dart';
 
 import '../../core/models/task.dart';
 import '../../core/viewmodels/task_view_model.dart';
+import '../common_widgets/label_card.dart';
 import '../common_widgets/no_saved_data.dart';
 import '../common_widgets/none_state.dart';
 import '../common_widgets/progress_indicator.dart';
+import '../shared_settings/responsive.dart';
 
 class DailyNotes extends StatefulWidget {
   final String categoryId;
-  DailyNotes({Key key, @required this.categoryId}) : super(key: key);
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  DailyNotes({Key key, @required this.categoryId, this.scaffoldKey})
+      : super(key: key);
 
   @override
   _DailyNotesState createState() => _DailyNotesState();
@@ -68,4 +72,21 @@ class _DailyNotesState extends State<DailyNotes> {
         },
         itemCount: _taskList.length,
       );
+
+  showSnackbar(String message) {
+    final snackBar = SnackBar(
+      content: Container(
+        alignment: Alignment.center,
+        height: SizeConfig.safeBlockVertical * 5.5,
+        width: double.infinity,
+        child: LabelCard(
+          label: message,
+          maxLine: 3,
+          fontSize: SizeConfig.safeBlockHorizontal * 4.5,
+        ),
+      ),
+      duration: Duration(milliseconds: 1300),
+    );
+    widget.scaffoldKey.currentState.showSnackBar(snackBar);
+  }
 }

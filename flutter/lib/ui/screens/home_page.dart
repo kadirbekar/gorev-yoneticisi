@@ -16,10 +16,10 @@ class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   List<CategoryList> _categoryList;
   CategoryListViewModel _categoryListViewModel;
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
       length: 3,
       initialIndex: 0,
       child: Scaffold(
+        key: _scaffoldKey,
         resizeToAvoidBottomPadding: true,
         floatingActionButton: addTaskFabButton,
         appBar: appbar,
@@ -64,7 +65,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget get appbar => AppBar(
-        key: _scaffoldKey,
         bottom: tabbarItems,
         centerTitle: true,
         backgroundColor: UIColorHelper.DEFAULT_COLOR,
@@ -89,7 +89,9 @@ class _HomePageState extends State<HomePage> {
       enableDrag: true,
       context: context,
       builder: (builder) {
-        return MyModelBottomSheet();
+        return MyModelBottomSheet(
+          parent: this,
+        );
       },
     );
   }

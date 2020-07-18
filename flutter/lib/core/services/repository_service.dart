@@ -1,3 +1,6 @@
+import 'package:gorev_yoneticisi/core/models/add_new_task.dart';
+import 'package:gorev_yoneticisi/core/models/common_response.dart';
+
 import '../models/category_list.dart';
 import '../models/task.dart';
 import 'mongodb_service.dart';
@@ -14,11 +17,23 @@ class RepositoryService {
 
   RepositoryService._init();
 
+  //get all categories from db
   Future<List<CategoryList>> getAllCategories() async {
     return await _mongoDbService.getAllCategories();
   }
 
+  //get task by id
   Future<List<Task>> listTasksById(String categoryId) async {
     return await _mongoDbService.listTasksById(categoryId);
+  }
+
+  //add new task
+  Future<Response> addNewTask(NewTask task) async {
+    return await _mongoDbService.addNewTask(task);
+  }
+
+  //delete task by giving id
+  Future<Response> deleteTaskById(String id) async {
+    return await _mongoDbService.deleteTaskById(id);
   }
 }
