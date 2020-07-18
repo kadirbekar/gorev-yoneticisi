@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gorev_yoneticisi/ui/common_widgets/label_card.dart';
+import 'package:gorev_yoneticisi/ui/shared_settings/responsive.dart';
 
 class NoSavedData extends StatelessWidget {
   const NoSavedData({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -17,9 +20,9 @@ class NoSavedData extends StatelessWidget {
           SizedBox(
             height: 15,
           ),
-          Text(
-            "No Saved Data",
-            style: TextStyle(fontSize: 16.5, fontWeight: FontWeight.bold),
+          LabelCard(
+            label: 'No Saved Data',
+            fontSize: SizeConfig.safeBlockHorizontal * 4.5,
           ),
         ],
       ),

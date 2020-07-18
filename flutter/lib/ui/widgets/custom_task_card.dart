@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gorev_yoneticisi/core/constants/color_constants.dart';
 
 import '../common_widgets/label_card.dart';
 
@@ -6,9 +7,10 @@ class CustomTaskCard extends StatelessWidget {
   final int index;
   final String title;
   final String subtitle;
-  final Function onPressed;
+  final Function editOnPressed;
+  final Function deleteOnPressed;
   const CustomTaskCard(
-      {Key key, this.index, this.title, this.subtitle, this.onPressed})
+      {Key key, this.index, this.title, this.subtitle, this.editOnPressed,this.deleteOnPressed})
       : super(key: key);
 
   @override
@@ -28,13 +30,29 @@ class CustomTaskCard extends StatelessWidget {
           label: subtitle,
           maxLine: 5,
         ),
-        trailing: IconButton(
-            icon: Icon(
-              Icons.delete,
-              color: Colors.red,
-              size: 30,
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            IconButton(
+              color: UIColorHelper.DEFAULT_COLOR,
+              onPressed: editOnPressed,
+              icon: Icon(
+                Icons.edit,
+              ),
             ),
-            onPressed: onPressed),
+            SizedBox(
+              width: 5,
+            ),
+            IconButton(
+              color: UIColorHelper.DEFAULT_COLOR,
+              onPressed: deleteOnPressed,
+              icon: Icon(Icons.delete),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+          ],
+        ),
       ),
     );
   }

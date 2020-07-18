@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gorev_yoneticisi/ui/common_widgets/show_snackbar_message.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/models/add_new_task.dart';
@@ -168,16 +169,7 @@ class _MyModelBottomSheetState extends State<MyModelBottomSheet> {
 
   showSnackbar(String message) {
     final snackBar = SnackBar(
-      content: Container(
-        alignment: Alignment.center,
-        height: SizeConfig.safeBlockVertical * 4.5,
-        width: double.infinity,
-        child: LabelCard(
-          label: message,
-          maxLine: 3,
-          fontSize: SizeConfig.safeBlockHorizontal * 3.8,
-        ),
-      ),
+      content: ShowSnackbarMessage(message: message,),
       duration: Duration(milliseconds: 1300),
     );
     widget.scaffoldKey.currentState.showSnackBar(snackBar);

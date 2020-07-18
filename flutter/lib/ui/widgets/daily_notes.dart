@@ -3,11 +3,10 @@ import 'package:provider/provider.dart';
 
 import '../../core/models/task.dart';
 import '../../core/viewmodels/task_view_model.dart';
-import '../common_widgets/label_card.dart';
 import '../common_widgets/no_saved_data.dart';
 import '../common_widgets/none_state.dart';
 import '../common_widgets/progress_indicator.dart';
-import '../shared_settings/responsive.dart';
+import '../common_widgets/show_snackbar_message.dart';
 import 'custom_task_card.dart';
 
 class DailyNotes extends StatefulWidget {
@@ -46,7 +45,7 @@ class _DailyNotesState extends State<DailyNotes> {
               case ConnectionState.active:
               case ConnectionState.done:
                 _taskList = snapshot.data;
-                return showResult;
+                return _taskList.length > 0 ? showResult : NoSavedData();
               default:
                 return null;
             }
@@ -62,7 +61,7 @@ class _DailyNotesState extends State<DailyNotes> {
               index: index,
               title: _taskList[index].name,
               subtitle: _taskList[index].description,
-              onPressed: () {
+              deleteOnPressed: () {
                 Provider.of<TaskViewModel>(context, listen: false)
                     .deleteTaskById(_taskList[index].id)
                     .then((result) {
@@ -74,6 +73,7 @@ class _DailyNotesState extends State<DailyNotes> {
                   }
                 });
               },
+              editOnPressed: () {},
             );
           } else {
             return NoSavedData();
@@ -84,15 +84,8 @@ class _DailyNotesState extends State<DailyNotes> {
 
   showSnackbar(String message) {
     final snackBar = SnackBar(
-      content: Container(
-        alignment: Alignment.center,
-        height: SizeConfig.safeBlockVertical * 4.5,
-        width: double.infinity,
-        child: LabelCard(
-          label: message ?? "",
-          maxLine: 3,
-          fontSize: SizeConfig.safeBlockHorizontal * 4,
-        ),
+      content: ShowSnackbarMessage(
+        message: message,
       ),
       duration: Duration(milliseconds: 1300),
     );
