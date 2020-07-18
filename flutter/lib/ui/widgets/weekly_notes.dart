@@ -90,12 +90,12 @@ class _WeeklyNotesState extends State<WeeklyNotes> {
     final snackBar = SnackBar(
       content: Container(
         alignment: Alignment.center,
-        height: SizeConfig.safeBlockVertical * 5.5,
+        height: SizeConfig.safeBlockVertical * 4.5,
         width: double.infinity,
         child: LabelCard(
           label: message,
           maxLine: 3,
-          fontSize: SizeConfig.safeBlockHorizontal * 4.5,
+          fontSize: SizeConfig.safeBlockHorizontal * 4,
         ),
       ),
       duration: Duration(milliseconds: 1300),

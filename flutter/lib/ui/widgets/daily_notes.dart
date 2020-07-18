@@ -8,6 +8,7 @@ import '../common_widgets/no_saved_data.dart';
 import '../common_widgets/none_state.dart';
 import '../common_widgets/progress_indicator.dart';
 import '../shared_settings/responsive.dart';
+import 'custom_task_card.dart';
 
 class DailyNotes extends StatefulWidget {
   final String categoryId;
@@ -57,14 +58,22 @@ class _DailyNotesState extends State<DailyNotes> {
   Widget get showResult => ListView.builder(
         itemBuilder: (context, index) {
           if (_taskList.length > 0) {
-            return Card(
-              child: ListTile(
-                leading: CircleAvatar(
-                  child: Text((index + 1).toString()),
-                ),
-                title: Text(_taskList[index].name),
-                subtitle: Text(_taskList[index].description),
-              ),
+            return CustomTaskCard(
+              index: index,
+              title: _taskList[index].name,
+              subtitle: _taskList[index].description,
+              onPressed: () {
+                Provider.of<TaskViewModel>(context, listen: false)
+                    .deleteTaskById(_taskList[index].id)
+                    .then((result) {
+                  if (result.result == true) {
+                    showSnackbar(result.message);
+                    setState(() {});
+                  } else {
+                    showSnackbar(result.message);
+                  }
+                });
+              },
             );
           } else {
             return NoSavedData();
@@ -77,12 +86,12 @@ class _DailyNotesState extends State<DailyNotes> {
     final snackBar = SnackBar(
       content: Container(
         alignment: Alignment.center,
-        height: SizeConfig.safeBlockVertical * 5.5,
+        height: SizeConfig.safeBlockVertical * 4.5,
         width: double.infinity,
         child: LabelCard(
-          label: message,
+          label: message ?? "",
           maxLine: 3,
-          fontSize: SizeConfig.safeBlockHorizontal * 4.5,
+          fontSize: SizeConfig.safeBlockHorizontal * 4,
         ),
       ),
       duration: Duration(milliseconds: 1300),

@@ -90,6 +90,7 @@ class HomePageState extends State<HomePage> {
       context: context,
       builder: (builder) {
         return MyModelBottomSheet(
+          scaffoldKey: _scaffoldKey,
           parent: this,
         );
       },
@@ -121,12 +122,15 @@ class HomePageState extends State<HomePage> {
         children: [
           DailyNotes(
             categoryId: _categoryList[0].id,
+            scaffoldKey: _scaffoldKey,
           ),
           WeeklyNotes(
             categoryId: _categoryList[1].id,
+            scaffoldKey: _scaffoldKey,
           ),
           MonthlyNotes(
             categoryId: _categoryList[2].id,
+            scaffold: _scaffoldKey,
           ),
         ],
       );

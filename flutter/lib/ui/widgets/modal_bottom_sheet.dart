@@ -81,8 +81,7 @@ class _MyModelBottomSheetState extends State<MyModelBottomSheet> {
               SizedBox(height: 15),
               DefaultRaisedButton(
                 label: 'Save',
-                textStyle:
-                    TextStyle(fontSize: SizeConfig.safeBlockVertical * 4.5),
+                textStyle: TextStyle(fontSize: SizeConfig.safeBlockVertical * 4.5),
                 height: SizeConfig.safeBlockVertical * 6.5,
                 width: double.infinity,
                 onPressed: () {
@@ -97,7 +96,7 @@ class _MyModelBottomSheetState extends State<MyModelBottomSheet> {
                       showSnackbar(result.message);
                       widget.parent.setState(() {});
                     } else {
-                      print(result.message);
+                      showSnackbar(result.message);
                     }
                   });
                 },
@@ -171,12 +170,12 @@ class _MyModelBottomSheetState extends State<MyModelBottomSheet> {
     final snackBar = SnackBar(
       content: Container(
         alignment: Alignment.center,
-        height: SizeConfig.safeBlockVertical * 5.5,
+        height: SizeConfig.safeBlockVertical * 4.5,
         width: double.infinity,
         child: LabelCard(
           label: message,
           maxLine: 3,
-          fontSize: SizeConfig.safeBlockHorizontal * 4.5,
+          fontSize: SizeConfig.safeBlockHorizontal * 3.8,
         ),
       ),
       duration: Duration(milliseconds: 1300),

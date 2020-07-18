@@ -39,7 +39,7 @@ class _LabelCardState extends State<LabelCard> {
       padding: widget.padding,
       alignment: widget.alignment,
       child: Text(
-        widget.label ?? "Lütfen tekrar deneyiniz.",
+        widget.label,
         overflow: TextOverflow.ellipsis,
         maxLines: widget.maxLine,
         textAlign: widget.textAlign,
