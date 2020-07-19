@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gorev_yoneticisi/ui/screens/update_task.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/models/task.dart';
@@ -77,7 +78,18 @@ class _MonthlyNotesState extends State<MonthlyNotes> {
                     showSnackbar(result.message);
                   }
                 });
-              }, editOnPressed: (){},
+              },
+              editOnPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UpdateTask(
+                              task: _taskList[index],
+                              setState: () {
+                                setState(() {});
+                              },
+                            )));
+              },
             );
           } else {
             return NoSavedData();

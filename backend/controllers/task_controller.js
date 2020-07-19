@@ -1,7 +1,8 @@
 const Task = require("../models/task_model");
 const createError = require("http-errors");
+var messages = require('../message_constants/constants');
 
-//yeni bir görev eklerken kullanılır
+//add new task
 const addNewTask = async (req, res, next) => {
   const newTask = new Task(req.body);
 
@@ -15,13 +16,13 @@ const addNewTask = async (req, res, next) => {
       if (result) {
         return res.status(201).json({
           result: true,
-          message: "Başarılı bir şekilde kayıt edildi.",
+          message: messages.success_messages.Success,
           islemKodu: 201,
         });
       } else {
         return res.status(400).json({
           result: false,
-          message: "İşlem sırasında bir hata oluştu, lütfen tekrar deneyiniz.",
+          message: messages.error_messages.Error,
           islemKodu: 400,
         });
       }
@@ -31,24 +32,22 @@ const addNewTask = async (req, res, next) => {
   }
 };
 
-//var olan görevi güncellerken kullanılır
+//update task by id
 const updateTask = async (req, res, next) => {
   try {
-    const willBeUpdated = await Task.findOneAndUpdate(
-      { _id: req.body.id },
-      req.body,
-      { lean: true, new: true }
-    );
+    delete req.body.createdDate;
+    console.log(req.body);
+    const willBeUpdated = await Task.findOneAndUpdate({ _id: req.body.id },req.body,{ lean: true, new: true });
     if (willBeUpdated) {
       return res.status(201).json({
         result: true,
-        message: "Başarılı bir şekilde güncellendi",
+        message: messages.success_messages.Success,
         islemKodu: 201,
       });
     } else {
       return res.status(400).json({
         result: false,
-        message: "İşlem sırasında bir hata oluştu, lütfen tekrar deneyiniz.",
+        message: messages.error_messages.Error,
         islemKodu: 400,
       });
     }
@@ -57,20 +56,20 @@ const updateTask = async (req, res, next) => {
   }
 };
 
-//var olan görevi silerken kullanılır
+//delete task by id
 const deleteTask = async (req, res, next) => {
   try {
     const willBeDeleted = await Task.findByIdAndDelete({ _id: req.body.id });
     if (willBeDeleted) {
       return res.status(201).json({
         result: true,
-        message: "Başarılı bir şekilde silindi",
+        message: messages.success_messages.Success,
         islemKodu: 201,
       });
     } else {
       return res.status(404).json({
         result: false,
-        message: "Kayıt bulunamadı",
+        message: messages.error_messages.Error,
         islemKodu: 404,
       });
     }
@@ -79,7 +78,7 @@ const deleteTask = async (req, res, next) => {
   }
 };
 
-//bütün kayıtları listeler
+//list all tasks
 const listAllTasks = async (req, res, next) => {
   try {
     const data = await Task.find({});

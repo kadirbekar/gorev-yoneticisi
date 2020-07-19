@@ -55,4 +55,14 @@ class TaskViewModel with ChangeNotifier{
     }
     return response;
   }
+
+  Future<Response> updateTaskById(String id,String name,String description,String categoryId) async {
+    Response response = Response();
+    try {
+      response = await _repositoryService.updateTaskById(id,name,description,categoryId);
+    } catch (e) {
+      state = TaskState.ErrorState;
+    }
+    return response;
+  }
 }

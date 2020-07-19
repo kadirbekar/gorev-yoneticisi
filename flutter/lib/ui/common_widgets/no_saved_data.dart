@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gorev_yoneticisi/ui/common_widgets/label_card.dart';
-import 'package:gorev_yoneticisi/ui/shared_settings/responsive.dart';
+
+import '../shared_settings/responsive.dart';
+import 'label_card.dart';
 
 class NoSavedData extends StatelessWidget {
   const NoSavedData({Key key}) : super(key: key);

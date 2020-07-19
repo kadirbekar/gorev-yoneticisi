@@ -36,4 +36,11 @@ class RepositoryService {
   Future<Response> deleteTaskById(String id) async {
     return await _mongoDbService.deleteTaskById(id);
   }
+
+  //update task by id
+  Future<Response> updateTaskById(
+      String id, String name, String description, String categoryId) async {
+    return await _mongoDbService.updateTaskById(
+        id, name, description, categoryId);
+  }
 }

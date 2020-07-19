@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/models/add_new_task.dart';
+import '../../core/constants/color_constants.dart';
 import '../../core/models/category_list.dart';
+import '../../core/models/task.dart';
 import '../../core/viewmodels/category_view_model.dart';
 import '../../core/viewmodels/task_view_model.dart';
 import '../common_methods/focus_node.dart';
@@ -11,21 +12,19 @@ import '../common_widgets/default_raised_button.dart';
 import '../common_widgets/label_card.dart';
 import '../common_widgets/show_snackbar_message.dart';
 import '../common_widgets/text_form_field.dart';
-import '../screens/home_page.dart';
 import '../shared_settings/responsive.dart';
 
-class MyModelBottomSheet extends StatefulWidget {
-  final HomePageState parent;
-  final GlobalKey<ScaffoldState> scaffoldKey;
+class UpdateTask extends StatefulWidget {
+  final Task task;
+  final Function setState;
 
-  const MyModelBottomSheet({Key key, this.parent, this.scaffoldKey})
-      : super(key: key);
+  const UpdateTask({Key key, this.task, this.setState}) : super(key: key);
 
   @override
-  _MyModelBottomSheetState createState() => _MyModelBottomSheetState();
+  _UpdateTaskState createState() => _UpdateTaskState();
 }
 
-class _MyModelBottomSheetState extends State<MyModelBottomSheet> {
+class _UpdateTaskState extends State<UpdateTask> {
   var _nameController = TextEditingController();
   var _descriptionController = TextEditingController();
 
@@ -33,6 +32,7 @@ class _MyModelBottomSheetState extends State<MyModelBottomSheet> {
   final FocusNode _descriptionFocusNode = FocusNode();
 
   final _formKey = GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<CategoryList> categoryList;
   CategoryList currentCategory;
@@ -44,6 +44,8 @@ class _MyModelBottomSheetState extends State<MyModelBottomSheet> {
   void initState() {
     super.initState();
     categoryList = [];
+    _nameController.text = widget.task.name;
+    _descriptionController.text = widget.task.description;
     Provider.of<CategoryListViewModel>(context, listen: false)
         .categoryList
         .forEach((element) {
@@ -64,45 +66,64 @@ class _MyModelBottomSheetState extends State<MyModelBottomSheet> {
     SizeConfig().init(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-      child: Container(
-        color: Colors.teal[100],
-        height: SizeConfig.safeBlockVertical * 80,
-        padding: const EdgeInsets.all(12),
-        width: double.infinity,
-        child: Form(
-          autovalidate: autoControl,
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              nameTextFormField,
-              SizedBox(height: 5),
-              descriptionTextFormField,
-              SizedBox(height: 15),
-              dropDownItems,
-              SizedBox(height: 15),
-              DefaultRaisedButton(
-                label: 'Save',
-                textStyle: TextStyle(fontSize: SizeConfig.safeBlockVertical * 4),
-                height: SizeConfig.safeBlockVertical * 6.5,
-                width: double.infinity,
-                onPressed: () {
-                  Provider.of<TaskViewModel>(context, listen: false)
-                      .addNewTask(NewTask(
-                          name: _nameController.text,
-                          description: _descriptionController.text,
-                          categoryId: firstCategory))
-                      .then((result) {
-                    if (result.result == true) {
-                      Navigator.pop(context);
-                      showSnackbar(result.message);
-                      widget.parent.setState(() {});
-                    } else {
-                      showSnackbar(result.message);
-                    }
-                  });
-                },
+      child: Scaffold(
+        key: scaffoldKey,
+        appBar: AppBar(
+          title: LabelCard(
+            label: 'Update Task',
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+          centerTitle: true,
+          backgroundColor: UIColorHelper.DEFAULT_COLOR,
+        ),
+        body: Builder(
+          builder: (context) => Container(
+            padding: const EdgeInsets.all(12),
+            width: double.infinity,
+            child: Form(
+              autovalidate: autoControl,
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  nameTextFormField,
+                  SizedBox(height: 5),
+                  descriptionTextFormField,
+                  SizedBox(height: 15),
+                  dropDownItems,
+                  SizedBox(height: 15),
+                  DefaultRaisedButton(
+                    label: 'Update',
+                    textStyle:
+                        TextStyle(fontSize: SizeConfig.safeBlockVertical * 4),
+                    height: SizeConfig.safeBlockVertical * 6.5,
+                    width: double.infinity,
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        _formKey.currentState.save();
+                        Provider.of<TaskViewModel>(context, listen: false)
+                            .updateTaskById(
+                          widget.task.id,
+                          _nameController.text,
+                          _descriptionController.text,
+                          firstCategory,
+                        )
+                            .then((result) {
+                          if (result.result == true) {
+                            showSnackbar(result.message);
+                            widget.setState();
+                            Navigator.pop(context);
+                          } else {
+                            Navigator.pop(context);
+                            showSnackbar(result.message);
+                          }
+                        });
+                      }
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -169,9 +190,11 @@ class _MyModelBottomSheetState extends State<MyModelBottomSheet> {
 
   showSnackbar(String message) {
     final snackBar = SnackBar(
-      content: ShowSnackbarMessage(message: message,),
+      content: ShowSnackbarMessage(
+        message: message,
+      ),
       duration: Duration(milliseconds: 1300),
     );
-    widget.scaffoldKey.currentState.showSnackBar(snackBar);
+    scaffoldKey.currentState.showSnackBar(snackBar);
   }
 }

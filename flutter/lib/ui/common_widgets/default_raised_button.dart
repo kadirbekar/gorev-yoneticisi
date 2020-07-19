@@ -23,9 +23,13 @@ class DefaultRaisedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       height: this.height,
       width: this.width,
       child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(25)),
+        ),
         color: Colors.teal,
         onPressed: this.onPressed,
         child: Text(

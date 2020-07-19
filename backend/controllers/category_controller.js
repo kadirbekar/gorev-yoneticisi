@@ -1,7 +1,8 @@
 const Category = require("../models/category_model");
 const createError = require("http-errors");
+var messages = require('../message_constants/constants');
 
-//yeni kategori ekliyoruz
+//add new category
 const addNewCategory = async (req, res, next) => {
   try {
     const newCategory = new Category(req.body);
@@ -11,13 +12,13 @@ const addNewCategory = async (req, res, next) => {
     if (result) {
       return res.status(201).json({
         result: true,
-        message: "Yeni kategori eklendi",
+        message: messages.success_messages.Success,
         islemKodu: 201,
       });
     } else {
       return res.status(400).json({
         result: false,
-        message: "Lütfen tekrar deneyiniz.",
+        message: messages.error_messages.Error,
         islemKodu: 400,
       });
     }
@@ -26,17 +27,30 @@ const addNewCategory = async (req, res, next) => {
   }
 };
 
-//bütün kategorileri listele
-const listAllCategories = async(req,res,next) => {
+//list all categories
+const listAllCategories = async (req, res, next) => {
   try {
+    
     const data = await Category.find({});
-    return res.status(200).json(data);
+    if (data.length == 0 || data == undefined) {
+      const addCategories = await Category.insertMany([
+        { name: "daily" },
+        { name: "weekly" },
+        { name: "monthly" },
+      ]);
+      if (addCategories) {
+        const data = await Category.find({});
+        return res.status(200).json(data);
+      }
+    } else {
+      return res.status(200).json(data);
+    }
   } catch (error) {
-    next(createError(500,error));
+    next(createError(500, error));
   }
-}
+};
 
 module.exports = {
   addNewCategory,
-  listAllCategories
+  listAllCategories,
 };

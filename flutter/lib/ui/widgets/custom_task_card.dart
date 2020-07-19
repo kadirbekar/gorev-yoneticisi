@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gorev_yoneticisi/core/constants/color_constants.dart';
+import '../../core/constants/color_constants.dart';
 
 import '../common_widgets/label_card.dart';
 
@@ -10,12 +10,19 @@ class CustomTaskCard extends StatelessWidget {
   final Function editOnPressed;
   final Function deleteOnPressed;
   const CustomTaskCard(
-      {Key key, this.index, this.title, this.subtitle, this.editOnPressed,this.deleteOnPressed})
+      {Key key,
+      this.index,
+      this.title,
+      this.subtitle,
+      this.editOnPressed,
+      this.deleteOnPressed})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.all(10),
+      color: Colors.teal[100],
       child: ListTile(
         contentPadding: const EdgeInsets.all(12),
         leading: CircleAvatar(
@@ -38,6 +45,8 @@ class CustomTaskCard extends StatelessWidget {
               onPressed: editOnPressed,
               icon: Icon(
                 Icons.edit,
+                color: Colors.green,
+                size: 30,
               ),
             ),
             SizedBox(
@@ -46,7 +55,11 @@ class CustomTaskCard extends StatelessWidget {
             IconButton(
               color: UIColorHelper.DEFAULT_COLOR,
               onPressed: deleteOnPressed,
-              icon: Icon(Icons.delete),
+              icon: Icon(
+                Icons.delete,
+                color: Colors.red,
+                size: 30,
+              ),
             ),
             SizedBox(
               width: 5,

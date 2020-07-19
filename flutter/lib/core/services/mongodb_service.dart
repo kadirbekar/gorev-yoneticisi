@@ -85,4 +85,22 @@ class MongoDbService {
     }
     return response;
   }
+
+  //update task by id
+  Future<Response> updateTaskById(String id,String name,String description,String categoryId) async {
+    Response response = Response();
+    String json = '{"id" : "$id","name" : "$name","description" : "$description", "categoryId" : "$categoryId"}';
+    try {
+      final request = await http.post(ApiConstant.SERVICE_URL+MethodConstants.updateTask,headers: ApiConstant.HEADERS,body: json);
+
+      if(request.statusCode == 201) {
+        response = responseFromJson(request.body);
+      } else {
+        print(request.statusCode);
+      }
+    } catch (e) {
+      return Response();
+    }
+    return response;
+  }
 }

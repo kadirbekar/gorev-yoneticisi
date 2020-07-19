@@ -7,6 +7,7 @@ import '../common_widgets/no_saved_data.dart';
 import '../common_widgets/none_state.dart';
 import '../common_widgets/progress_indicator.dart';
 import '../common_widgets/show_snackbar_message.dart';
+import '../screens/update_task.dart';
 import '../shared_settings/responsive.dart';
 import 'custom_task_card.dart';
 
@@ -77,7 +78,18 @@ class _WeeklyNotesState extends State<WeeklyNotes> {
                     showSnackbar(result.message);
                   }
                 });
-              }, editOnPressed: (){},
+              },
+              editOnPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UpdateTask(
+                              task: _taskList[index],
+                              setState: () {
+                                setState(() {});
+                              },
+                            )));
+              },
             );
           } else {
             return NoSavedData();

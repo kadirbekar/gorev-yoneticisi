@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gorev_yoneticisi/ui/common_widgets/label_card.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/color_constants.dart';
@@ -53,7 +54,7 @@ class HomePageState extends State<HomePage> {
               case ConnectionState.active:
               case ConnectionState.done:
                 _categoryList = snapshot.data;
-                return tabbarView;
+                return _categoryList.length > 0 ? tabbarView : Center(child: LabelCard(label: 'Category Not Found, Please Refresh The Page',maxLine: 3,),);
               default:
                 return null;
             }
